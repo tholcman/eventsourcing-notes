@@ -130,7 +130,7 @@ class UserRegistrationHandler implements CommandHandler {
 }
 ```
 
-For now there is no validation to preserve the code to be simple. Even if we want to add some validation, they would be just really simple rules for one value without context. More complex validation rules can be created in cooperation with a View on data. This View is created in The Query part and "The Query part" is not written yet :-) .
+For now there is no validation to preserve the code to be simple. Even if we want to add some validation, they would be just really simple rules for one value without context. More complex validation rules can be created in cooperation with a View on data. Creation of these Views belongs to The Query part and "The Query part" is not written yet :-) .
 
 
 ### Dispatcher
@@ -198,7 +198,7 @@ $registerUser = new RegisterUser(
 $commandDispatcher->dispatch($registerUser);
 ```
 
-The example php code is in this repo in `src/theCommandPart.php` so you can run it by
+The example php code is in this repo in `src/theCommandPart.php` so you can run it:
 
 ```
 php src/theCommandPart.php
