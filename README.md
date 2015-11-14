@@ -29,15 +29,13 @@ class RegisterUser implements Command, Dispatchable {
 
 ```
 
-We don't need to specify type, as class name bear this information. Command is created e.g. from HttpRequest. The name of the command should be imperative (DoSomething).
+We don't need to specify type, the class name bear this information. The name of the command should be imperative (DoSomething).
 
 ### Event
 
 As Command, Event has a type, a payload and list of some kind of unique identifiers to know to which entities the event is relevant to.
 
 ```php
-interface Id {};
-
 interface Event {
 	// public function getType();
 	public function getPayload();
@@ -83,6 +81,8 @@ class EmailSet implements Event, Dispatchable {
 In Events code we use UserId which is just unique identifier of entity to which the event is relevant. Again, the code of UserId class is very general.
 
 ```php
+interface Id {};
+
 class UserId implements Id {
 	private $id;
 	public static function create() {
