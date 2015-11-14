@@ -50,7 +50,7 @@ class RegisterUser implements Command, Dispatchable{
 	}
 }
 
-class UserId {
+class UserId implements Id {
 	private $id;
 	public static function create() {
 		return new UserId(uniqid());
