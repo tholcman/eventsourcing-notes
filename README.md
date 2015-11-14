@@ -6,10 +6,9 @@ CQRS and EventSourcing as I understand it
 
 ### Command
 
-It's just simple interface, command should has some type and can carry some data, some payload.
+Command should has some type and can carry some data, some payload.
 
 ```php
-<?php
 interface Command {
 	// public function getType();
 	public function getPayload();
@@ -36,8 +35,7 @@ We don't need to specify type, as class name bear this information. Command is c
 
 As Command, Event has a type, a payload and list of some kind of unique identifiers to know to which entities the event is relevant to.
 
-```
-<?php
+```php
 interface Id {};
 
 interface Event {
@@ -45,13 +43,11 @@ interface Event {
 	public function getPayload();
 	public function /* List<Id> */ getRelates();
 };
-
 ```
 
 Here is code of several entities with implementations. As you can see there is a lot of boilerplate code which can be refactored with some kind of generalization, e.g. to Traits, but for this simple example, we let the code in classes. Names of events should be in past tense (SomethingHappened).
 
 ```php
-<?php
 class NameSet implements Event, Dispatchable{
 	private $payload, $relates;
 	public function __construct(UserId $id, $name) {
@@ -82,13 +78,11 @@ class EmailSet implements Event, Dispatchable {
 		return $this->relates;
 	}
 }
-
 ```
 
 In Events code we use UserId which is just unique identifier of entity to which the event is relevant. Again, the code of UserId class is very general.
 
 ```php
-<?php
 class UserId implements Id {
 	private $id;
 	public static function create() {
@@ -108,17 +102,14 @@ class UserId implements Id {
 Commands are processed by CommandHandlers.
 
 ```php
-<?php
 interface CommandHandler {
 	public function handle(Command $cmd);
 };
-
 ```
 
 In this example CommandHandler 'converts' the Command into several events and passed them to the EventDispatcher.
 
 ```php
-<?php
 class UserRegistrationHandler implements CommandHandler {
 	private $eventDispatcher;
 	public function __construct($eventDispatcher) {
@@ -137,7 +128,6 @@ class UserRegistrationHandler implements CommandHandler {
 		$this->eventDispatcher->dispatch($emailSet);
 	}
 }
-
 ```
 
 For now there is no validation to preserve the code to be simple. Even if we want to add some validation, they would be just really simple rules for one value without context. More complex validation rules can be created in cooperation with a View on data. This View is created in The Query part and "The Query part" is not written yet :-) .
@@ -148,7 +138,6 @@ For now there is no validation to preserve the code to be simple. Even if we wan
 We pass Commands to Handlers trought Dispatcher. We use same dispatcher for both Commands and Events. Dispatcher can hold several Handlers and they may or may not react to Command/Event. Execution of `->handle($x)` method should be surrounded by try-catch.
 
 ```php
-<?php
 interface Dispatchable {};
 
 interface Dispatcher{
@@ -174,7 +163,6 @@ EventHandler is the last component of setup. Here is EventHandler which just pri
 
 
 ```php
-<?php
 interface EventHandler {
 	public function handle(Event $cmd);
 };
@@ -190,7 +178,6 @@ class PrintEventHandler implements EventHandler {
 Working example:
 
 ```php
-<?php
 $eventHandler = new PrintEventHandler;
 
 $eventDispatcher = new CommonDispatcher([
@@ -211,7 +198,7 @@ $registerUser = new RegisterUser(
 $commandDispatcher->dispatch($registerUser);
 ```
 
-The example php code is connected in this repo in `src/theCommandPart.php` so you can run it by
+The example php code is in this repo in `src/theCommandPart.php` so you can run it by
 
 ```
 php src/theCommandPart.php
