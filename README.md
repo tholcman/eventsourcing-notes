@@ -6,7 +6,7 @@ CQRS and EventSourcing as I understand it
 
 ### Command
 
-Command should has some type and can carry some data, some payload.
+Command should has type and can carry some data, some payload.
 
 ```php
 interface Command {
